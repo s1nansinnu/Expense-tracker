@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- ===== Header ===== -->
+    <header class="app-header">
+        <h1>💰 Expense Tracker</h1>
+    </header>
+
+    <main class="container">
+
+        <!-- ===== Add / Edit Form ===== -->
+        <section class="card form-card" id="form-section">
+            <div class="card-header" id="form-toggle">
+                <h2 id="form-title">➕ Add Expense</h2>
+                <button class="btn btn-icon" id="form-collapse-btn" title="Toggle form">▼</button>
+            </div>
+            <form id="expense-form" class="expense-form">
+                <input type="hidden" id="edit-id" value="">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="title">Title <span class="required">*</span></label>
+                        <input type="text" id="title" name="title" maxlength="100"
+                               placeholder="e.g. Grocery shopping" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount (₹) <span class="required">*</span></label>
+                        <input type="number" id="amount" name="amount" min="0.01" step="0.01"
+                               placeholder="0.00" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category">Category <span class="required">*</span></label>
+                        <select id="category" name="category" required>
+                            <option value="">— Select —</option>
+                            <option value="food">🍔 Food</option>
+                            <option value="transport">🚗 Transport</option>
+                            <option value="shopping">🛒 Shopping</option>
+                            <option value="bills">📄 Bills</option>
+                            <option value="entertainment">🎬 Entertainment</option>
+                            <option value="other">📦 Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date <span class="required">*</span></label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="note">Note <span class="optional">(optional)</span></label>
+                    <textarea id="note" name="note" maxlength="500" rows="2"
+                              placeholder="Any extra details…"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submit-btn">Save Expense</button>
+                    <button type="button" class="btn btn-secondary" id="cancel-btn" style="display:none;">Cancel</button>
+                </div>
+                <div id="form-error" class="form-error" style="display:none;"></div>
+            </form>
+        </section>
+
+        <!-- ===== Monthly Summary ===== -->
+        <section class="card summary-card" id="summary-section">
+            <div class="card-header">
+                <h2>📊 Monthly Summary</h2>
+                <div class="summary-controls">
+                    <input type="month" id="summary-month">
+                </div>
+            </div>
+            <div id="summary-content" class="summary-content">
+                <p class="empty-state">Loading…</p>
+            </div>
+        </section>
+
+        <!-- ===== Filters ===== -->
+        <section class="card filter-card" id="filter-section">
+            <div class="card-header">
+                <h2>🔍 Filter Expenses</h2>
+                <button class="btn btn-text" id="clear-filters-btn">Clear Filters</button>
+            </div>
+            <div class="filter-bar">
+                <div class="form-group">
+                    <label for="filter-category">Category</label>
+                    <select id="filter-category">
+                        <option value="">All</option>
+                        <option value="food">🍔 Food</option>
+                        <option value="transport">🚗 Transport</option>
+                        <option value="shopping">🛒 Shopping</option>
+                        <option value="bills">📄 Bills</option>
+                        <option value="entertainment">🎬 Entertainment</option>
+                        <option value="other">📦 Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="filter-date-from">From</label>
+                    <input type="date" id="filter-date-from">
+                </div>
+                <div class="form-group">
+                    <label for="filter-date-to">To</label>
+                    <input type="date" id="filter-date-to">
+                </div>
+                <div class="form-group">
+                    <label for="filter-search">Search title</label>
+                    <input type="text" id="filter-search" placeholder="Type to search…" maxlength="100">
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Expense Table ===== -->
+        <section class="card table-card" id="table-section">
+            <div class="card-header">
+                <h2>📋 All Expenses</h2>
+                <span class="expense-count" id="expense-count"></span>
+            </div>
+            <div id="table-content">
+                <p class="empty-state">Loading…</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== Delete Confirmation Modal ===== -->
+    <div class="modal-overlay" id="delete-modal" style="display:none;">
+        <div class="modal">
+            <h3>Delete Expense</h3>
+            <p>Are you sure you want to delete "<span id="delete-title"></span>"?</p>
+            <p class="modal-sub">This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="btn btn-danger" id="confirm-delete-btn">Delete</button>
+                <button class="btn btn-secondary" id="cancel-delete-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
